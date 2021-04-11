@@ -3,34 +3,42 @@
 #include <string.h>
 char *toHex(int num)
 {
-    char *s = (char *)malloc(sizeof(char) * 1);
-    memset(s, '\0', sizeof(1));
-    s[0] = '\0';
 
-    // char *s = "\0";
-    while (num)
+    // create size
+    int temp = num;
+    int size = 0;
+    while (temp)
     {
-        int8_t temp = num & 0x000f;
-        printf("temp :  %d\n", temp);
+        // printf("Temp size : %d \n", temp);
+        temp >>= 4;
+        size++;
+    }
+    printf("Strign len is : %d\n", size);
+
+    char *s = (char *)malloc(sizeof(char) * size + 1);
+    memset(s, '\0', sizeof(char) * size + 1);
+
+    for (int i = 0; i < size; i++)
+    {
+        printf("num is : %d \t", num);
+        int8_t temp = num & 0x0000000f;
+        printf("Temp : %d \n", temp);
 
         if (temp < 10)
         {
-            printf("c : %d\n", temp);
+            char c = temp + '0';
+            s[size - i - 1] = c;
         }
         else
-        {
-            char c = 'A' + temp - 10;
-            strcat(s, &c);
-            printf("s : %s\n", s);
-            // printf("c : %c\n", c);
-        }
+            s[size - i - 1] = 'a' + temp - 10;
 
-        num >>= 8;
+        num >>= 4;
     }
 
     return s;
 }
+
 int main()
 {
-    printf("ans : %s\n", toHex(26));
+    printf("ans : %s\n", toHex(127));
 }
